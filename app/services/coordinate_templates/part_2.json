@@ -1,0 +1,589 @@
+﻿{
+    "name":  "TFQ",
+    "groups":  [
+                   {
+                       "name":  "TFQ_Q1",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q1_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  66,
+                                                                 "y":  676,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  99,
+                                                                 "y":  677,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q1_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  64,
+                                                                 "y":  698,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  98,
+                                                                 "y":  697,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q1_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  65,
+                                                                 "y":  716,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  98,
+                                                                 "y":  716,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q1_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  66,
+                                                                 "y":  735,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  98,
+                                                                 "y":  735,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q2",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q2_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  133,
+                                                                 "y":  678,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  166,
+                                                                 "y":  676,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q2_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  133,
+                                                                 "y":  697,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  167,
+                                                                 "y":  695,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q2_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  133,
+                                                                 "y":  714,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  165,
+                                                                 "y":  715,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q2_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  132,
+                                                                 "y":  735,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  168,
+                                                                 "y":  735,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q3",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q3_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  255,
+                                                                 "y":  677,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  289,
+                                                                 "y":  675,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q3_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  256,
+                                                                 "y":  695,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  289,
+                                                                 "y":  695,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q3_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  256,
+                                                                 "y":  716,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  289,
+                                                                 "y":  715,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q3_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  256,
+                                                                 "y":  736,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  291,
+                                                                 "y":  736,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q4",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q4_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  323,
+                                                                 "y":  676,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  358,
+                                                                 "y":  675,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q4_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  324,
+                                                                 "y":  695,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  357,
+                                                                 "y":  695,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q4_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  323,
+                                                                 "y":  715,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  357,
+                                                                 "y":  715,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q4_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  325,
+                                                                 "y":  733,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  357,
+                                                                 "y":  733,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q5",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q5_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  447,
+                                                                 "y":  675,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  480,
+                                                                 "y":  675,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q5_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  448,
+                                                                 "y":  696,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  481,
+                                                                 "y":  695,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q5_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  448,
+                                                                 "y":  715,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  480,
+                                                                 "y":  716,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q5_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  448,
+                                                                 "y":  734,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  481,
+                                                                 "y":  735,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q6",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q6_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  516,
+                                                                 "y":  675,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  549,
+                                                                 "y":  676,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q6_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  515,
+                                                                 "y":  696,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  549,
+                                                                 "y":  696,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q6_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  515,
+                                                                 "y":  715,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  549,
+                                                                 "y":  715,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q6_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  515,
+                                                                 "y":  735,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  548,
+                                                                 "y":  735,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q7",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q7_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  639,
+                                                                 "y":  676,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  673,
+                                                                 "y":  676,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q7_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  638,
+                                                                 "y":  697,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  673,
+                                                                 "y":  697,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q7_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  638,
+                                                                 "y":  715,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  673,
+                                                                 "y":  716,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q7_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  638,
+                                                                 "y":  735,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  674,
+                                                                 "y":  735,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   },
+                   {
+                       "name":  "TFQ_Q8",
+                       "statements":  [
+                                          {
+                                              "name":  "TFQ_Q8_Statement1",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  707,
+                                                                 "y":  678,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  741,
+                                                                 "y":  676,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q8_Statement2",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  705,
+                                                                 "y":  695,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  741,
+                                                                 "y":  695,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q8_Statement3",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  706,
+                                                                 "y":  715,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  740,
+                                                                 "y":  714,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          },
+                                          {
+                                              "name":  "TFQ_Q8_Statement4",
+                                              "points":  [
+                                                             {
+                                                                 "name":  "TFQ_True",
+                                                                 "x":  705,
+                                                                 "y":  736,
+                                                                 "value":  "T"
+                                                             },
+                                                             {
+                                                                 "name":  "TFQ_False",
+                                                                 "x":  741,
+                                                                 "y":  736,
+                                                                 "value":  "F"
+                                                             }
+                                                         ]
+                                          }
+                                      ]
+                   }
+               ]
+}

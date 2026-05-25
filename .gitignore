@@ -1,0 +1,63 @@
+﻿# Python bytecode/cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment/config secrets
+.env
+.env.*
+!.env.example
+
+# FastAPI/Uvicorn runtime
+*.log
+logs/
+
+# Test/coverage/tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Local IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# OMR local/debug artifacts
+uploads/
+tmp/
+temp/
+output/
+outputs/
+*.tmp
+*.bak
+pdf_page_image.png
+warped_answer_sheet.png
+cropped_answer_sheet.png
+debug_markers.png
+threshold.png
+detected_answers.json
+
+# Local sample scans/documents
+*.pdf
+*.png
+*.jpg
+*.jpeg

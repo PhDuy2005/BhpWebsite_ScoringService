@@ -1,0 +1,525 @@
+﻿{
+    "name":  "CandidateId",
+    "characters":  [
+                       {
+                           "name":  "CandidateId_Character1",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character1_0",
+                                              "x":  566,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_1",
+                                              "x":  567,
+                                              "y":  140,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_2",
+                                              "x":  566,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_3",
+                                              "x":  568,
+                                              "y":  190,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_4",
+                                              "x":  566,
+                                              "y":  213,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_5",
+                                              "x":  565,
+                                              "y":  237,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_6",
+                                              "x":  566,
+                                              "y":  263,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_7",
+                                              "x":  566,
+                                              "y":  286,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_8",
+                                              "x":  564,
+                                              "y":  311,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character1_9",
+                                              "x":  565,
+                                              "y":  336,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character2",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character2_0",
+                                              "x":  582,
+                                              "y":  116,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_1",
+                                              "x":  581,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_2",
+                                              "x":  582,
+                                              "y":  164,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_3",
+                                              "x":  582,
+                                              "y":  189,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_4",
+                                              "x":  582,
+                                              "y":  213,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_5",
+                                              "x":  582,
+                                              "y":  238,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_6",
+                                              "x":  583,
+                                              "y":  264,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_7",
+                                              "x":  583,
+                                              "y":  286,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_8",
+                                              "x":  583,
+                                              "y":  311,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character2_9",
+                                              "x":  582,
+                                              "y":  336,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character3",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character3_0",
+                                              "x":  599,
+                                              "y":  119,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_1",
+                                              "x":  598,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_2",
+                                              "x":  598,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_3",
+                                              "x":  600,
+                                              "y":  188,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_4",
+                                              "x":  598,
+                                              "y":  216,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_5",
+                                              "x":  598,
+                                              "y":  237,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_6",
+                                              "x":  598,
+                                              "y":  263,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_7",
+                                              "x":  598,
+                                              "y":  287,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_8",
+                                              "x":  599,
+                                              "y":  310,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character3_9",
+                                              "x":  599,
+                                              "y":  337,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character4",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character4_0",
+                                              "x":  614,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_1",
+                                              "x":  615,
+                                              "y":  141,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_2",
+                                              "x":  614,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_3",
+                                              "x":  615,
+                                              "y":  190,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_4",
+                                              "x":  614,
+                                              "y":  213,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_5",
+                                              "x":  614,
+                                              "y":  237,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_6",
+                                              "x":  614,
+                                              "y":  263,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_7",
+                                              "x":  616,
+                                              "y":  286,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_8",
+                                              "x":  615,
+                                              "y":  311,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character4_9",
+                                              "x":  615,
+                                              "y":  337,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character5",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character5_0",
+                                              "x":  632,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_1",
+                                              "x":  631,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_2",
+                                              "x":  631,
+                                              "y":  165,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_3",
+                                              "x":  632,
+                                              "y":  191,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_4",
+                                              "x":  632,
+                                              "y":  214,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_5",
+                                              "x":  633,
+                                              "y":  237,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_6",
+                                              "x":  631,
+                                              "y":  264,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_7",
+                                              "x":  633,
+                                              "y":  286,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_8",
+                                              "x":  632,
+                                              "y":  311,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character5_9",
+                                              "x":  630,
+                                              "y":  335,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character6",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character6_0",
+                                              "x":  649,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_1",
+                                              "x":  648,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_2",
+                                              "x":  650,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_3",
+                                              "x":  649,
+                                              "y":  189,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_4",
+                                              "x":  649,
+                                              "y":  214,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_5",
+                                              "x":  648,
+                                              "y":  239,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_6",
+                                              "x":  649,
+                                              "y":  264,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_7",
+                                              "x":  649,
+                                              "y":  287,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_8",
+                                              "x":  649,
+                                              "y":  310,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character6_9",
+                                              "x":  649,
+                                              "y":  339,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character7",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character7_0",
+                                              "x":  665,
+                                              "y":  118,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_1",
+                                              "x":  667,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_2",
+                                              "x":  664,
+                                              "y":  167,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_3",
+                                              "x":  664,
+                                              "y":  190,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_4",
+                                              "x":  667,
+                                              "y":  214,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_5",
+                                              "x":  666,
+                                              "y":  239,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_6",
+                                              "x":  666,
+                                              "y":  263,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_7",
+                                              "x":  665,
+                                              "y":  287,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_8",
+                                              "x":  664,
+                                              "y":  312,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character7_9",
+                                              "x":  664,
+                                              "y":  337,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "CandidateId_Character8",
+                           "points":  [
+                                          {
+                                              "name":  "CandidateId_Character8_0",
+                                              "x":  683,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_1",
+                                              "x":  681,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_2",
+                                              "x":  681,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_3",
+                                              "x":  681,
+                                              "y":  190,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_4",
+                                              "x":  682,
+                                              "y":  215,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_5",
+                                              "x":  680,
+                                              "y":  237,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_6",
+                                              "x":  680,
+                                              "y":  263,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_7",
+                                              "x":  680,
+                                              "y":  287,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_8",
+                                              "x":  682,
+                                              "y":  310,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "CandidateId_Character8_9",
+                                              "x":  680,
+                                              "y":  336,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       }
+                   ]
+}

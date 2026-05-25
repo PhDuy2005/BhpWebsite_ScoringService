@@ -1,0 +1,265 @@
+﻿{
+    "name":  "ExamId",
+    "characters":  [
+                       {
+                           "name":  "ExamId_Character1",
+                           "points":  [
+                                          {
+                                              "name":  "ExamId_Character1_0",
+                                              "x":  715,
+                                              "y":  120,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_1",
+                                              "x":  715,
+                                              "y":  141,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_2",
+                                              "x":  714,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_3",
+                                              "x":  714,
+                                              "y":  191,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_4",
+                                              "x":  714,
+                                              "y":  214,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_5",
+                                              "x":  714,
+                                              "y":  239,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_6",
+                                              "x":  714,
+                                              "y":  265,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_7",
+                                              "x":  714,
+                                              "y":  288,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_8",
+                                              "x":  714,
+                                              "y":  312,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character1_9",
+                                              "x":  713,
+                                              "y":  336,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "ExamId_Character2",
+                           "points":  [
+                                          {
+                                              "name":  "ExamId_Character2_0",
+                                              "x":  730,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_1",
+                                              "x":  730,
+                                              "y":  143,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_2",
+                                              "x":  730,
+                                              "y":  167,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_3",
+                                              "x":  730,
+                                              "y":  191,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_4",
+                                              "x":  730,
+                                              "y":  214,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_5",
+                                              "x":  730,
+                                              "y":  238,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_6",
+                                              "x":  730,
+                                              "y":  264,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_7",
+                                              "x":  731,
+                                              "y":  288,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_8",
+                                              "x":  731,
+                                              "y":  311,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character2_9",
+                                              "x":  730,
+                                              "y":  335,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "ExamId_Character3",
+                           "points":  [
+                                          {
+                                              "name":  "ExamId_Character3_0",
+                                              "x":  747,
+                                              "y":  118,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_1",
+                                              "x":  746,
+                                              "y":  142,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_2",
+                                              "x":  747,
+                                              "y":  165,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_3",
+                                              "x":  748,
+                                              "y":  191,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_4",
+                                              "x":  747,
+                                              "y":  215,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_5",
+                                              "x":  746,
+                                              "y":  239,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_6",
+                                              "x":  746,
+                                              "y":  264,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_7",
+                                              "x":  748,
+                                              "y":  288,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_8",
+                                              "x":  747,
+                                              "y":  313,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character3_9",
+                                              "x":  746,
+                                              "y":  336,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       },
+                       {
+                           "name":  "ExamId_Character4",
+                           "points":  [
+                                          {
+                                              "name":  "ExamId_Character4_0",
+                                              "x":  764,
+                                              "y":  117,
+                                              "value":  "0"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_1",
+                                              "x":  763,
+                                              "y":  143,
+                                              "value":  "1"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_2",
+                                              "x":  763,
+                                              "y":  166,
+                                              "value":  "2"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_3",
+                                              "x":  764,
+                                              "y":  192,
+                                              "value":  "3"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_4",
+                                              "x":  764,
+                                              "y":  215,
+                                              "value":  "4"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_5",
+                                              "x":  764,
+                                              "y":  239,
+                                              "value":  "5"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_6",
+                                              "x":  763,
+                                              "y":  265,
+                                              "value":  "6"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_7",
+                                              "x":  763,
+                                              "y":  288,
+                                              "value":  "7"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_8",
+                                              "x":  762,
+                                              "y":  311,
+                                              "value":  "8"
+                                          },
+                                          {
+                                              "name":  "ExamId_Character4_9",
+                                              "x":  762,
+                                              "y":  335,
+                                              "value":  "9"
+                                          }
+                                      ]
+                       }
+                   ]
+}
