@@ -1,17 +1,23 @@
-﻿import json
-from datetime import datetime, timezone
+import json
+import logging
+import re
+from io import BytesIO
 from copy import deepcopy
+from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 from typing import Any
 from uuid import uuid4
+from zipfile import ZIP_DEFLATED, ZipFile
 
 import cv2
 import fitz
 import numpy as np
 
-from app.core.config import TEMPLATE_DIR
+from app.core.config import DEBUG_IMAGE_DIR, RAW_IMAGE_DIR, TEMPLATE_DIR
 
 
+logger = logging.getLogger(__name__)
 OUTPUT_W = 800
 MIN_OUTPUT_H = 1100
 MEAN_GRAY_RADIUS = 6
@@ -22,20 +28,37 @@ TEMPLATE_FILES = {
     "part_2": "part_2.json",
     "part_3": "part_3.json",
 }
+DEBUG_MARK_COLORS = {
+    "outer": (0, 255, 255),
+    "inner": (0, 0, 255),
+}
+TEMPLATE_POINT_COLORS = {
+    "part_1": (0, 0, 255),
+    "part_2": (0, 255, 255),
+    "part_3": (0, 180, 0),
+    "candidate_id": (255, 0, 255),
+    "exam_id": (255, 0, 0),
+}
 
 
 class AnswerDetectionError(Exception):
     pass
 
 
-def pdf_page_to_image(file_bytes: bytes, page_index: int = 0, zoom: int = 2) -> np.ndarray:
-    doc = fitz.open(stream=file_bytes, filetype="pdf")
-    if page_index >= doc.page_count:
-        raise AnswerDetectionError(f"PDF page index out of range: {page_index}")
+def get_pdf_page_count(file_bytes: bytes) -> int:
+    with fitz.open(stream=file_bytes, filetype="pdf") as doc:
+        return doc.page_count
 
-    page = doc[page_index]
-    matrix = fitz.Matrix(zoom, zoom)
-    pix = page.get_pixmap(matrix=matrix, alpha=False)
+
+def pdf_page_to_image(file_bytes: bytes, page_index: int = 0, zoom: int = 2) -> np.ndarray:
+    with fitz.open(stream=file_bytes, filetype="pdf") as doc:
+        if page_index < 0 or page_index >= doc.page_count:
+            raise AnswerDetectionError(f"PDF page index out of range: {page_index}")
+
+        page = doc[page_index]
+        matrix = fitz.Matrix(zoom, zoom)
+        pix = page.get_pixmap(matrix=matrix, alpha=False)
+
     image = np.frombuffer(pix.samples, dtype=np.uint8)
     image = image.reshape(pix.height, pix.width, pix.n)
     return cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -49,15 +72,19 @@ def image_bytes_to_image(file_bytes: bytes) -> np.ndarray:
     return image
 
 
-def file_bytes_to_image(file_bytes: bytes, filename: str | None = None) -> np.ndarray:
+def file_bytes_to_image(
+    file_bytes: bytes,
+    filename: str | None = None,
+    page_index: int = 0,
+) -> np.ndarray:
     suffix = Path(filename or "").suffix.lower()
     if suffix == ".pdf":
-        return pdf_page_to_image(file_bytes)
+        return pdf_page_to_image(file_bytes, page_index=page_index)
 
     try:
         return image_bytes_to_image(file_bytes)
     except AnswerDetectionError:
-        return pdf_page_to_image(file_bytes)
+        return pdf_page_to_image(file_bytes, page_index=page_index)
 
 
 def order_points(points: np.ndarray) -> np.ndarray:
@@ -139,8 +166,12 @@ def warp_answer_sheet(image: np.ndarray, points: np.ndarray) -> np.ndarray:
     return cv2.warpPerspective(image, matrix, (OUTPUT_W, output_h))
 
 
-def prepare_answer_sheet(file_bytes: bytes, filename: str | None = None) -> tuple[np.ndarray, dict[str, Any]]:
-    image = file_bytes_to_image(file_bytes, filename)
+def prepare_answer_sheet(
+    file_bytes: bytes,
+    filename: str | None = None,
+    page_index: int = 0,
+) -> tuple[np.ndarray, dict[str, Any]]:
+    image = file_bytes_to_image(file_bytes, filename, page_index=page_index)
     candidates = find_marker_candidates(image)
     marker_points = select_outer_4_markers(candidates)
     warped = warp_answer_sheet(image, marker_points)
@@ -210,6 +241,21 @@ def iter_point_groups(template: dict[str, Any]) -> list[dict[str, Any]]:
         return groups
 
     raise AnswerDetectionError(f"Unsupported template root: {name}")
+
+
+def log_template_points(template_name: str, template: dict[str, Any]) -> None:
+    for group in iter_point_groups(template):
+        for point in group["points"]:
+            logger.info(
+                "mean_gray_read template=%s group=%s point=%s x=%s y=%s value=%s mean_gray=%.4f",
+                template_name,
+                group["name"],
+                point["name"],
+                point["x"],
+                point["y"],
+                point["value"],
+                point["mean_gray"],
+            )
 
 
 def enrich_template_with_mean_gray(template: dict[str, Any], image: np.ndarray) -> dict[str, Any]:
@@ -390,9 +436,42 @@ def build_omr_sections(
     }
 
 
-def build_external_submission_id(filename: str | None = None) -> str:
+def build_external_submission_id(filename: str | None = None, page_index: int | None = None) -> str:
     stem = Path(filename or "answer-sheet").stem or "answer-sheet"
+    if page_index is not None:
+        stem = f"{stem}-page-{page_index + 1}"
     return f"scoring-service-omr-{stem}-{uuid4()}"
+
+
+def sanitize_filename_component(value: str) -> str:
+    sanitized = re.sub(r"[^a-zA-Z0-9._-]+", "-", value).strip(".-")
+    return sanitized or "answer-sheet"
+
+
+def build_debug_image_path(filename: str | None = None, page_index: int = 0) -> Path:
+    stem = sanitize_filename_component(Path(filename or "answer-sheet").stem)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return DEBUG_IMAGE_DIR / f"{stem}-page-{page_index + 1}-{timestamp}-{uuid4().hex[:8]}.png"
+
+
+def build_raw_image_path(filename: str | None = None, page_index: int = 0) -> Path:
+    stem = sanitize_filename_component(Path(filename or "answer-sheet").stem)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return RAW_IMAGE_DIR / f"{stem}-page-{page_index + 1}-{timestamp}-{uuid4().hex[:8]}.png"
+
+
+def path_to_file_url(path: Path) -> str:
+    return path.resolve().as_uri()
+
+
+def resolve_pdf_url(pdf_url: str) -> Path:
+    parsed = urlparse(pdf_url)
+    if parsed.scheme == "file":
+        netloc = f"//{parsed.netloc}" if parsed.netloc else ""
+        return Path(unquote(f"{netloc}{parsed.path.lstrip('/')}"))
+    if parsed.scheme in {"http", "https"}:
+        raise AnswerDetectionError("HTTP/HTTPS pdf_url is not supported yet.")
+    return Path(pdf_url)
 
 
 def utc_now_iso() -> str:
@@ -466,6 +545,16 @@ def detect_saq(template: dict[str, Any], threshold_info: dict[str, float]) -> di
 def detect_template(template: dict[str, Any]) -> dict[str, Any]:
     threshold_info = kmeans_threshold(all_points(template))
     name = template["name"]
+    logger.info(
+        "threshold_detected template=%s dark_center=%.4f light_center=%.4f threshold=%.4f weak_threshold=%.4f min_gap=%.4f strong_gap=%.4f",
+        name,
+        threshold_info["dark_center"],
+        threshold_info["light_center"],
+        threshold_info["threshold"],
+        threshold_info["weak_threshold"],
+        threshold_info["min_gap"],
+        threshold_info["strong_gap"],
+    )
 
     if name in {"CandidateId", "ExamId"}:
         result = detect_id_template(template, threshold_info)
@@ -481,28 +570,254 @@ def detect_template(template: dict[str, Any]) -> dict[str, Any]:
     return {"threshold": threshold_info, **result}
 
 
-def process_answer_sheet(file_bytes: bytes, filename: str | None = None) -> dict[str, Any]:
-    warped, debug = prepare_answer_sheet(file_bytes, filename)
+def collect_marked_debug_points(
+    template_name: str,
+    template: dict[str, Any],
+    threshold_info: dict[str, float],
+) -> list[dict[str, Any]]:
+    marked_points = []
+    for group in iter_point_groups(template):
+        result = classify_group(group["points"], threshold_info)
+        group_marked_points = [
+            point
+            for point in group["points"]
+            if point["mean_gray"] <= threshold_info["threshold"]
+        ]
+        if not group_marked_points and result["selected"] is not None:
+            group_marked_points = [result["selected"]]
+
+        for point in group_marked_points:
+            marked_points.append(
+                {
+                    "template": template_name,
+                    "group": group["name"],
+                    "value": point["value"],
+                    "x": int(point["x"]),
+                    "y": int(point["y"]),
+                    "status": result["status"],
+                    "mean_gray": float(point["mean_gray"]),
+                }
+            )
+
+    return marked_points
+
+
+def collect_template_points(
+    template_name: str,
+    template: dict[str, Any],
+) -> list[dict[str, Any]]:
+    points = []
+    for group in iter_point_groups(template):
+        for point in group["points"]:
+            points.append(
+                {
+                    "template": template_name,
+                    "group": group["name"],
+                    "point": point["name"],
+                    "value": point["value"],
+                    "x": int(point["x"]),
+                    "y": int(point["y"]),
+                }
+            )
+    return points
+
+
+def render_template_points_image(
+    image: np.ndarray,
+    template_points: list[dict[str, Any]],
+) -> bytes:
+    debug_image = image.copy()
+    for point in template_points:
+        color = TEMPLATE_POINT_COLORS[point["template"]]
+        center = (point["x"], point["y"])
+        cv2.circle(debug_image, center, 8, color, 2)
+        cv2.circle(debug_image, center, 3, color, -1)
+
+    success, encoded = cv2.imencode(".png", debug_image)
+    if not success:
+        raise AnswerDetectionError("Could not encode debug image.")
+
+    return encoded.tobytes()
+
+
+def save_marked_debug_image(
+    image: np.ndarray,
+    marked_points: list[dict[str, Any]],
+    filename: str | None = None,
+    page_index: int = 0,
+) -> Path:
+    DEBUG_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+    debug_image = image.copy()
+    for point in marked_points:
+        center = (point["x"], point["y"])
+        cv2.circle(debug_image, center, 10, DEBUG_MARK_COLORS["outer"], 3)
+        cv2.circle(debug_image, center, 4, DEBUG_MARK_COLORS["inner"], -1)
+
+    output_path = build_debug_image_path(filename, page_index=page_index)
+    if not cv2.imwrite(str(output_path), debug_image):
+        raise AnswerDetectionError(f"Could not write debug image: {output_path}")
+
+    logger.info(
+        "debug_image_saved path=%s page=%s marked_points=%s",
+        output_path,
+        page_index + 1,
+        len(marked_points),
+    )
+    return output_path
+
+
+def save_raw_image(
+    image: np.ndarray,
+    filename: str | None = None,
+    page_index: int = 0,
+) -> Path:
+    RAW_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+    output_path = build_raw_image_path(filename, page_index=page_index)
+    if not cv2.imwrite(str(output_path), image):
+        raise AnswerDetectionError(f"Could not write raw image: {output_path}")
+    logger.info("raw_image_saved path=%s page=%s", output_path, page_index + 1)
+    return output_path
+
+
+def process_answer_sheet(
+    file_bytes: bytes,
+    filename: str | None = None,
+    page_index: int = 0,
+    include_page_number: bool = False,
+) -> dict[str, Any]:
+    warped, debug = prepare_answer_sheet(file_bytes, filename, page_index=page_index)
     templates = load_templates()
     enriched = {
         name: enrich_template_with_mean_gray(template, warped)
         for name, template in templates.items()
     }
+    for template_name, template in enriched.items():
+        log_template_points(template_name, template)
 
     candidate_result = detect_template(enriched["candidate_id"])
     exam_result = detect_template(enriched["exam_id"])
     part_1_result = detect_template(enriched["part_1"])
     part_2_result = detect_template(enriched["part_2"])
     part_3_result = detect_template(enriched["part_3"])
+    marked_debug_points = []
+    for template_name, template_result in {
+        "candidate_id": candidate_result,
+        "exam_id": exam_result,
+        "part_1": part_1_result,
+        "part_2": part_2_result,
+        "part_3": part_3_result,
+    }.items():
+        marked_debug_points.extend(
+            collect_marked_debug_points(
+                template_name,
+                enriched[template_name],
+                template_result["threshold"],
+            )
+        )
+    debug_image_path = save_marked_debug_image(
+        warped,
+        marked_debug_points,
+        filename=filename,
+        page_index=page_index,
+    )
+    raw_image_path = save_raw_image(
+        warped,
+        filename=filename,
+        page_index=page_index,
+    )
 
-    return {
+    result = {
         "examUuid": None,
         "paperCode": exam_result["answer"],
         "studentUuid": candidate_result["answer"],
-        "externalSubmissionId": build_external_submission_id(filename),
+        "externalSubmissionId": build_external_submission_id(
+            filename,
+            page_index=page_index if include_page_number else None,
+        ),
         "scannedAt": utc_now_iso(),
+        "debugImagePath": str(debug_image_path),
+        "rawImagePath": str(raw_image_path),
+        "rawImageUrl": path_to_file_url(raw_image_path),
+        "scoredImageUrl": path_to_file_url(debug_image_path),
         "sections": build_omr_sections(part_1_result, part_2_result, part_3_result),
     }
+    if include_page_number:
+        result["pageNumber"] = page_index + 1
+
+    return result
 
 
+def process_pdf_answer_sheets(file_bytes: bytes, filename: str | None = None) -> list[dict[str, Any]]:
+    page_count = get_pdf_page_count(file_bytes)
+    if page_count == 0:
+        raise AnswerDetectionError("PDF has no pages.")
 
+    return [
+        process_answer_sheet(
+            file_bytes,
+            filename=filename,
+            page_index=page_index,
+            include_page_number=True,
+        )
+        for page_index in range(page_count)
+    ]
+
+
+def process_answer_sheet_from_pdf_url(
+    pdf_url: str,
+    exam_uuid: str,
+    request_scanned_at: str | None = None,
+) -> list[dict[str, Any]]:
+    pdf_path = resolve_pdf_url(pdf_url)
+    if not pdf_path.exists():
+        raise AnswerDetectionError(f"PDF file not found: {pdf_url}")
+
+    file_bytes = pdf_path.read_bytes()
+    results = process_pdf_answer_sheets(file_bytes, filename=pdf_path.name)
+    scanned_at = request_scanned_at or utc_now_iso()
+
+    for result in results:
+        result["examUuid"] = exam_uuid
+        result["scannedAt"] = scanned_at
+
+    return results
+
+
+def generate_template_points_preview(
+    file_bytes: bytes,
+    filename: str | None = None,
+    page_index: int = 0,
+) -> bytes:
+    warped, _ = prepare_answer_sheet(file_bytes, filename, page_index=page_index)
+    templates = load_templates()
+    template_points = []
+    for template_name, template in templates.items():
+        template_points.extend(collect_template_points(template_name, template))
+
+    return render_template_points_image(warped, template_points)
+
+
+def generate_pdf_template_points_preview_archive(
+    file_bytes: bytes,
+    filename: str | None = None,
+) -> bytes:
+    page_count = get_pdf_page_count(file_bytes)
+    if page_count == 0:
+        raise AnswerDetectionError("PDF has no pages.")
+
+    archive_buffer = BytesIO()
+    stem = sanitize_filename_component(Path(filename or "answer-sheet").stem)
+
+    with ZipFile(archive_buffer, mode="w", compression=ZIP_DEFLATED) as archive:
+        for page_index in range(page_count):
+            image_bytes = generate_template_points_preview(
+                file_bytes,
+                filename=filename,
+                page_index=page_index,
+            )
+            archive.writestr(
+                f"{stem}-page-{page_index + 1}.png",
+                image_bytes,
+            )
+
+    return archive_buffer.getvalue()
