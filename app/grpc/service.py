@@ -111,9 +111,22 @@ class ScoringNormalGrpcService(scoring_normal_pb2_grpc.ScoringNormalServiceServi
 
         total_pages = len(results)
         for index, result in enumerate(results, start=1):
+            logger.info(
+                "grpc_read_omr_streaming_page request_id=%s page_number=%s total_pages=%s paper_code=%s student_code=%s",
+                request.request_id,
+                index,
+                total_pages,
+                result.get("paperCode"),
+                result.get("studentUuid"),
+            )
             yield _build_success_response(
                 request_id=request.request_id,
                 result=result,
                 page_number=index,
                 total_pages=total_pages,
             )
+        logger.info(
+            "grpc_read_omr_completed request_id=%s total_pages=%s",
+            request.request_id,
+            total_pages,
+        )

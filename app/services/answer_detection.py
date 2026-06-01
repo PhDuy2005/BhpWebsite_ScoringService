@@ -47,10 +47,13 @@ class AnswerDetectionError(Exception):
 
 def get_pdf_page_count(file_bytes: bytes) -> int:
     with fitz.open(stream=file_bytes, filetype="pdf") as doc:
-        return doc.page_count
+        page_count = doc.page_count
+    logger.info("pdf_page_count_detected page_count=%s", page_count)
+    return page_count
 
 
 def pdf_page_to_image(file_bytes: bytes, page_index: int = 0, zoom: int = 2) -> np.ndarray:
+    logger.info("pdf_page_to_image_started page_index=%s zoom=%s", page_index + 1, zoom)
     with fitz.open(stream=file_bytes, filetype="pdf") as doc:
         if page_index < 0 or page_index >= doc.page_count:
             raise AnswerDetectionError(f"PDF page index out of range: {page_index}")
@@ -61,7 +64,14 @@ def pdf_page_to_image(file_bytes: bytes, page_index: int = 0, zoom: int = 2) -> 
 
     image = np.frombuffer(pix.samples, dtype=np.uint8)
     image = image.reshape(pix.height, pix.width, pix.n)
-    return cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    converted = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    logger.info(
+        "pdf_page_to_image_completed page_index=%s width=%s height=%s",
+        page_index + 1,
+        converted.shape[1],
+        converted.shape[0],
+    )
+    return converted
 
 
 def image_bytes_to_image(file_bytes: bytes) -> np.ndarray:
@@ -69,6 +79,12 @@ def image_bytes_to_image(file_bytes: bytes) -> np.ndarray:
     image = cv2.imdecode(data, cv2.IMREAD_COLOR)
     if image is None:
         raise AnswerDetectionError("Unsupported or invalid image file.")
+    logger.info(
+        "image_bytes_decoded width=%s height=%s channels=%s",
+        image.shape[1],
+        image.shape[0],
+        image.shape[2] if len(image.shape) > 2 else 1,
+    )
     return image
 
 
@@ -78,6 +94,12 @@ def file_bytes_to_image(
     page_index: int = 0,
 ) -> np.ndarray:
     suffix = Path(filename or "").suffix.lower()
+    logger.info(
+        "file_bytes_to_image_started filename=%s suffix=%s page_index=%s",
+        filename,
+        suffix,
+        page_index + 1,
+    )
     if suffix == ".pdf":
         return pdf_page_to_image(file_bytes, page_index=page_index)
 
@@ -133,6 +155,12 @@ def find_marker_candidates(image: np.ndarray) -> list[dict[str, Any]]:
                 }
             )
 
+    logger.info(
+        "marker_candidates_detected candidates=%s min_marker_size=%.2f max_marker_size=%.2f",
+        len(candidates),
+        min_marker_size,
+        max_marker_size,
+    )
     return candidates
 
 
@@ -141,7 +169,9 @@ def select_outer_4_markers(candidates: list[dict[str, Any]]) -> np.ndarray:
         raise AnswerDetectionError(f"Could not find enough markers. Found {len(candidates)}.")
 
     points = np.array([candidate["center"] for candidate in candidates], dtype="float32")
-    return order_points(points)
+    selected = order_points(points)
+    logger.info("marker_points_selected points=%s", selected.astype(float).tolist())
+    return selected
 
 
 def warp_answer_sheet(image: np.ndarray, points: np.ndarray) -> np.ndarray:
@@ -163,7 +193,13 @@ def warp_answer_sheet(image: np.ndarray, points: np.ndarray) -> np.ndarray:
     )
 
     matrix = cv2.getPerspectiveTransform(src, dst)
-    return cv2.warpPerspective(image, matrix, (OUTPUT_W, output_h))
+    warped = cv2.warpPerspective(image, matrix, (OUTPUT_W, output_h))
+    logger.info(
+        "warp_answer_sheet_completed output_width=%s output_height=%s",
+        OUTPUT_W,
+        output_h,
+    )
+    return warped
 
 
 def prepare_answer_sheet(
@@ -171,6 +207,11 @@ def prepare_answer_sheet(
     filename: str | None = None,
     page_index: int = 0,
 ) -> tuple[np.ndarray, dict[str, Any]]:
+    logger.info(
+        "prepare_answer_sheet_started filename=%s page_index=%s",
+        filename,
+        page_index + 1,
+    )
     image = file_bytes_to_image(file_bytes, filename, page_index=page_index)
     candidates = find_marker_candidates(image)
     marker_points = select_outer_4_markers(candidates)
@@ -184,6 +225,14 @@ def prepare_answer_sheet(
         "marker_count": len(candidates),
         "markers": marker_points.astype(float).tolist(),
     }
+    logger.info(
+        "prepare_answer_sheet_completed filename=%s page_index=%s marker_count=%s warped_width=%s warped_height=%s",
+        filename,
+        page_index + 1,
+        len(candidates),
+        debug["warped_width"],
+        debug["warped_height"],
+    )
     return warped, debug
 
 
@@ -211,7 +260,9 @@ def load_template(name: str) -> dict[str, Any]:
 
 
 def load_templates() -> dict[str, dict[str, Any]]:
-    return {name: load_template(name) for name in TEMPLATE_FILES}
+    templates = {name: load_template(name) for name in TEMPLATE_FILES}
+    logger.info("templates_loaded names=%s", ",".join(templates.keys()))
+    return templates
 
 
 def iter_point_groups(template: dict[str, Any]) -> list[dict[str, Any]]:
@@ -309,7 +360,7 @@ def kmeans_threshold(points: list[dict[str, Any]]) -> dict[str, float]:
     threshold = (dark_center + light_center) / 2
     min_gap = max(4.0, separation * 0.25)
 
-    return {
+    threshold_info = {
         "dark_center": dark_center,
         "light_center": light_center,
         "threshold": threshold,
@@ -317,6 +368,14 @@ def kmeans_threshold(points: list[dict[str, Any]]) -> dict[str, float]:
         "min_gap": min_gap,
         "strong_gap": min_gap * 1.25,
     }
+    logger.info(
+        "kmeans_threshold_completed points=%s dark_center=%.4f light_center=%.4f threshold=%.4f",
+        len(points),
+        threshold_info["dark_center"],
+        threshold_info["light_center"],
+        threshold_info["threshold"],
+    )
+    return threshold_info
 
 
 def classify_group(points: list[dict[str, Any]], threshold_info: dict[str, float]) -> dict[str, Any]:
@@ -504,6 +563,7 @@ def detect_mcq(template: dict[str, Any], threshold_info: dict[str, float]) -> di
         questions.append({"name": group["name"], **result})
         answers[group["name"]] = result["answer"]
 
+    logger.info("detect_mcq_completed questions=%s answered=%s", len(questions), sum(1 for value in answers.values() if value))
     return {"name": template["name"], "answers": answers, "questions": questions}
 
 
@@ -519,6 +579,7 @@ def detect_tfq(template: dict[str, Any], threshold_info: dict[str, float]) -> di
             answers[statement["name"]] = result["answer"]
         questions.append({"name": question["name"], "statements": statements})
 
+    logger.info("detect_tfq_completed questions=%s statements=%s", len(questions), len(answers))
     return {"name": template["name"], "answers": answers, "questions": questions}
 
 
@@ -539,6 +600,7 @@ def detect_saq(template: dict[str, Any], threshold_info: dict[str, float]) -> di
         answers[question["name"]] = answer
         questions.append({"name": question["name"], "answer": answer, "characters": characters})
 
+    logger.info("detect_saq_completed questions=%s answered=%s", len(questions), sum(1 for value in answers.values() if value))
     return {"name": template["name"], "answers": answers, "questions": questions}
 
 
@@ -685,12 +747,20 @@ def process_answer_sheet(
     page_index: int = 0,
     include_page_number: bool = False,
 ) -> dict[str, Any]:
+    logger.info(
+        "process_answer_sheet_started filename=%s page_index=%s include_page_number=%s",
+        filename,
+        page_index + 1,
+        include_page_number,
+    )
     warped, debug = prepare_answer_sheet(file_bytes, filename, page_index=page_index)
+    logger.info("process_answer_sheet_debug filename=%s page_index=%s debug=%s", filename, page_index + 1, debug)
     templates = load_templates()
     enriched = {
         name: enrich_template_with_mean_gray(template, warped)
         for name, template in templates.items()
     }
+    logger.info("templates_enriched_with_mean_gray filename=%s page_index=%s", filename, page_index + 1)
     for template_name, template in enriched.items():
         log_template_points(template_name, template)
 
@@ -744,6 +814,16 @@ def process_answer_sheet(
     if include_page_number:
         result["pageNumber"] = page_index + 1
 
+    logger.info(
+        "process_answer_sheet_completed filename=%s page_index=%s paper_code=%s student_code=%s mcq=%s tfq=%s saq=%s",
+        filename,
+        page_index + 1,
+        result["paperCode"],
+        result["studentUuid"],
+        len(result["sections"]["mcq"]),
+        len(result["sections"]["tfq"]),
+        len(result["sections"]["saq"]),
+    )
     return result
 
 
@@ -752,15 +832,21 @@ def process_pdf_answer_sheets(file_bytes: bytes, filename: str | None = None) ->
     if page_count == 0:
         raise AnswerDetectionError("PDF has no pages.")
 
-    return [
-        process_answer_sheet(
-            file_bytes,
-            filename=filename,
-            page_index=page_index,
-            include_page_number=True,
+    logger.info("process_pdf_answer_sheets_started filename=%s page_count=%s", filename, page_count)
+    results = []
+    for page_index in range(page_count):
+        logger.info("process_pdf_page_started filename=%s page_index=%s", filename, page_index + 1)
+        results.append(
+            process_answer_sheet(
+                file_bytes,
+                filename=filename,
+                page_index=page_index,
+                include_page_number=True,
+            )
         )
-        for page_index in range(page_count)
-    ]
+        logger.info("process_pdf_page_completed filename=%s page_index=%s", filename, page_index + 1)
+    logger.info("process_pdf_answer_sheets_completed filename=%s page_count=%s", filename, page_count)
+    return results
 
 
 def process_answer_sheet_from_pdf_url(
@@ -768,11 +854,19 @@ def process_answer_sheet_from_pdf_url(
     exam_uuid: str,
     request_scanned_at: str | None = None,
 ) -> list[dict[str, Any]]:
+    logger.info(
+        "process_answer_sheet_from_pdf_url_started pdf_url=%s exam_uuid=%s request_scanned_at=%s",
+        pdf_url,
+        exam_uuid,
+        request_scanned_at,
+    )
     pdf_path = resolve_pdf_url(pdf_url)
+    logger.info("pdf_url_resolved pdf_url=%s resolved_path=%s", pdf_url, pdf_path)
     if not pdf_path.exists():
         raise AnswerDetectionError(f"PDF file not found: {pdf_url}")
 
     file_bytes = pdf_path.read_bytes()
+    logger.info("pdf_file_loaded path=%s bytes=%s", pdf_path, len(file_bytes))
     results = process_pdf_answer_sheets(file_bytes, filename=pdf_path.name)
     scanned_at = request_scanned_at or utc_now_iso()
 
@@ -780,6 +874,12 @@ def process_answer_sheet_from_pdf_url(
         result["examUuid"] = exam_uuid
         result["scannedAt"] = scanned_at
 
+    logger.info(
+        "process_answer_sheet_from_pdf_url_completed pdf_url=%s exam_uuid=%s pages=%s",
+        pdf_url,
+        exam_uuid,
+        len(results),
+    )
     return results
 
 
@@ -788,13 +888,21 @@ def generate_template_points_preview(
     filename: str | None = None,
     page_index: int = 0,
 ) -> bytes:
+    logger.info("generate_template_points_preview_started filename=%s page_index=%s", filename, page_index + 1)
     warped, _ = prepare_answer_sheet(file_bytes, filename, page_index=page_index)
     templates = load_templates()
     template_points = []
     for template_name, template in templates.items():
         template_points.extend(collect_template_points(template_name, template))
 
-    return render_template_points_image(warped, template_points)
+    image_bytes = render_template_points_image(warped, template_points)
+    logger.info(
+        "generate_template_points_preview_completed filename=%s page_index=%s point_count=%s",
+        filename,
+        page_index + 1,
+        len(template_points),
+    )
+    return image_bytes
 
 
 def generate_pdf_template_points_preview_archive(
@@ -805,6 +913,11 @@ def generate_pdf_template_points_preview_archive(
     if page_count == 0:
         raise AnswerDetectionError("PDF has no pages.")
 
+    logger.info(
+        "generate_pdf_template_points_preview_archive_started filename=%s page_count=%s",
+        filename,
+        page_count,
+    )
     archive_buffer = BytesIO()
     stem = sanitize_filename_component(Path(filename or "answer-sheet").stem)
 
@@ -820,4 +933,11 @@ def generate_pdf_template_points_preview_archive(
                 image_bytes,
             )
 
-    return archive_buffer.getvalue()
+    archive_bytes = archive_buffer.getvalue()
+    logger.info(
+        "generate_pdf_template_points_preview_archive_completed filename=%s page_count=%s archive_bytes=%s",
+        filename,
+        page_count,
+        len(archive_bytes),
+    )
+    return archive_bytes

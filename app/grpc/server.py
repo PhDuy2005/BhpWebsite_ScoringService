@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_server() -> grpc.Server:
+    logger.info("grpc_server_creating host=%s port=%s", GRPC_HOST, GRPC_PORT)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
     scoring_normal_pb2_grpc.add_ScoringNormalServiceServicer_to_server(
         ScoringNormalGrpcService(),
