@@ -14,7 +14,7 @@ import cv2
 import fitz
 import numpy as np
 
-from app.core.config import DEBUG_IMAGE_DIR, RAW_IMAGE_DIR, TEMPLATE_DIR
+from app.core.config import DEBUG_IMAGE_DIR, RAW_IMAGE_DIR, STORAGE_ROOT_PATH, TEMPLATE_DIR
 
 
 logger = logging.getLogger(__name__)
@@ -530,6 +530,9 @@ def resolve_pdf_url(pdf_url: str) -> Path:
         return Path(unquote(f"{netloc}{parsed.path.lstrip('/')}"))
     if parsed.scheme in {"http", "https"}:
         raise AnswerDetectionError("HTTP/HTTPS pdf_url is not supported yet.")
+    if parsed.path.startswith("/storage/"):
+        relative_storage_path = parsed.path.removeprefix("/storage/").lstrip("/")
+        return STORAGE_ROOT_PATH / Path(unquote(relative_storage_path))
     return Path(pdf_url)
 
 
