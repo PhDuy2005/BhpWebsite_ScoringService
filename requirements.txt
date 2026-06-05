@@ -6,3 +6,5 @@ opencv-python
 pymupdf
 pydantic
 httpx
+grpcio
+grpcio-tools
