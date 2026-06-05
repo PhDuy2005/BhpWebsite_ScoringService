@@ -399,8 +399,8 @@ def classify_group(points: list[dict[str, Any]], threshold_info: dict[str, float
             status = "blank"
             selected = None
     elif len(dark_points) > 1:
-        status = "ambiguous"
-        selected = None
+        status = "selected_multi"
+        selected = best
     elif second is not None and gap < threshold_info["min_gap"] and not is_clear_relative_mark:
         status = "ambiguous"
         selected = None
@@ -839,17 +839,135 @@ def process_pdf_answer_sheets(file_bytes: bytes, filename: str | None = None) ->
     results = []
     for page_index in range(page_count):
         logger.info("process_pdf_page_started filename=%s page_index=%s", filename, page_index + 1)
-        results.append(
-            process_answer_sheet(
+        try:
+            result = process_answer_sheet(
                 file_bytes,
                 filename=filename,
                 page_index=page_index,
                 include_page_number=True,
             )
-        )
+        except AnswerDetectionError as exc:
+            logger.exception(
+                "process_pdf_page_failed filename=%s page_index=%s error=%s",
+                filename,
+                page_index + 1,
+                exc,
+            )
+            results.append(
+                {
+                    "pageNumber": page_index + 1,
+                    "totalPages": page_count,
+                    "success": False,
+                    "errorMessage": str(exc),
+                }
+            )
+            continue
+        except Exception as exc:  # pragma: no cover
+            logger.exception(
+                "process_pdf_page_unexpected filename=%s page_index=%s error=%s",
+                filename,
+                page_index + 1,
+                exc,
+            )
+            results.append(
+                {
+                    "pageNumber": page_index + 1,
+                    "totalPages": page_count,
+                    "success": False,
+                    "errorMessage": f"Unexpected error: {exc}",
+                }
+            )
+            continue
+
+        result["totalPages"] = page_count
+        results.append(result)
         logger.info("process_pdf_page_completed filename=%s page_index=%s", filename, page_index + 1)
-    logger.info("process_pdf_answer_sheets_completed filename=%s page_count=%s", filename, page_count)
+    failed_pages = sum(1 for result in results if result.get("success") is False)
+    logger.info(
+        "process_pdf_answer_sheets_completed filename=%s page_count=%s failed_pages=%s",
+        filename,
+        page_count,
+        failed_pages,
+    )
     return results
+
+
+def iter_pdf_answer_sheets(file_bytes: bytes, filename: str | None = None):
+    page_count = get_pdf_page_count(file_bytes)
+    if page_count == 0:
+        raise AnswerDetectionError("PDF has no pages.")
+
+    logger.info("iter_pdf_answer_sheets_started filename=%s page_count=%s", filename, page_count)
+    for page_index in range(page_count):
+        logger.info("process_pdf_page_started filename=%s page_index=%s", filename, page_index + 1)
+        try:
+            result = process_answer_sheet(
+                file_bytes,
+                filename=filename,
+                page_index=page_index,
+                include_page_number=True,
+            )
+        except AnswerDetectionError as exc:
+            logger.exception(
+                "process_pdf_page_failed filename=%s page_index=%s error=%s",
+                filename,
+                page_index + 1,
+                exc,
+            )
+            yield {
+                "pageNumber": page_index + 1,
+                "totalPages": page_count,
+                "success": False,
+                "errorMessage": str(exc),
+            }
+            continue
+        except Exception as exc:  # pragma: no cover
+            logger.exception(
+                "process_pdf_page_unexpected filename=%s page_index=%s error=%s",
+                filename,
+                page_index + 1,
+                exc,
+            )
+            yield {
+                "pageNumber": page_index + 1,
+                "totalPages": page_count,
+                "success": False,
+                "errorMessage": f"Unexpected error: {exc}",
+            }
+            continue
+
+        result["totalPages"] = page_count
+        yield result
+        logger.info("process_pdf_page_completed filename=%s page_index=%s", filename, page_index + 1)
+    logger.info("iter_pdf_answer_sheets_completed filename=%s page_count=%s", filename, page_count)
+
+
+def iter_answer_sheet_from_pdf_url(
+    pdf_url: str,
+    exam_uuid: str,
+    request_scanned_at: str | None = None,
+):
+    logger.info(
+        "iter_answer_sheet_from_pdf_url_started pdf_url=%s exam_uuid=%s request_scanned_at=%s",
+        pdf_url,
+        exam_uuid,
+        request_scanned_at,
+    )
+    pdf_path = resolve_pdf_url(pdf_url)
+    logger.info("pdf_url_resolved pdf_url=%s resolved_path=%s", pdf_url, pdf_path)
+    if not pdf_path.exists():
+        raise AnswerDetectionError(f"PDF file not found: {pdf_url}")
+
+    file_bytes = pdf_path.read_bytes()
+    scanned_at = request_scanned_at or utc_now_iso()
+    logger.info("pdf_file_loaded path=%s bytes=%s", pdf_path, len(file_bytes))
+
+    for result in iter_pdf_answer_sheets(file_bytes, filename=pdf_path.name):
+        result["examUuid"] = exam_uuid
+        result["scannedAt"] = scanned_at
+        yield result
+
+    logger.info("iter_answer_sheet_from_pdf_url_completed pdf_url=%s exam_uuid=%s", pdf_url, exam_uuid)
 
 
 def process_answer_sheet_from_pdf_url(
