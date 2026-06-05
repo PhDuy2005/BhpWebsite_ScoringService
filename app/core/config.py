@@ -13,5 +13,5 @@ STORAGE_ROOT_PATH = Path(
 SCORING_STORAGE_DIR = STORAGE_ROOT_PATH / "scoring-service"
 DEBUG_IMAGE_DIR = SCORING_STORAGE_DIR / "debug_images"
 RAW_IMAGE_DIR = SCORING_STORAGE_DIR / "raw_images"
-GRPC_HOST = "127.0.0.1"
-GRPC_PORT = 50051
+GRPC_HOST = os.getenv("GRPC_HOST", os.getenv("APP_HOST", "127.0.0.1"))
+GRPC_PORT = int(os.getenv("GRPC_PORT", "50051"))
