@@ -520,7 +520,13 @@ def build_raw_image_path(filename: str | None = None, page_index: int = 0) -> Pa
 
 
 def path_to_file_url(path: Path) -> str:
-    return path.resolve().as_uri()
+    resolved_path = path.resolve()
+    storage_root = STORAGE_ROOT_PATH.resolve()
+    try:
+        relative_path = resolved_path.relative_to(storage_root)
+    except ValueError:
+        return resolved_path.as_uri()
+    return f"/storage/{relative_path.as_posix()}"
 
 
 def resolve_pdf_url(pdf_url: str) -> Path:
